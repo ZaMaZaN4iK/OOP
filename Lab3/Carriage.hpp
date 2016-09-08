@@ -13,7 +13,11 @@ private:
     std::string serialNum;
     double volume;
 public:
+    Carriage(){}
     Carriage(const std::string& str, const double v);
+
+    void setSerial(const std::string& str) { serialNum = str; }
+    void setVolume(const double maxVolume) { volume = maxVolume; }
 };
 
 

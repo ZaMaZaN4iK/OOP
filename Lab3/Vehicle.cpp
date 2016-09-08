@@ -1,14 +1,17 @@
 //
-// Created by zamazan4ik on 02.09.16.
+// Created by zamazan4ik on 08.09.16.
 //
 #include <iostream>
 
 #include "Vehicle.hpp"
 
+Vehicle::Engine::Engine(const double volumeEng, const double powerEng, const bool isTurbo)
+        : volume_(volumeEng), power_(powerEng), isTurbo_(isTurbo)
+{}
+
 Vehicle::Vehicle(const double volumeEng, const double powerEng,
-                 const bool isTurbo, const std::string &str,
-                 const double abstractSize) : engine_(Engine(volumeEng, powerEng, isTurbo)),
-                                       serialNum(str), size(abstractSize)
+        const bool isTurbo, const std::string& str,
+        const double abstractSize) : engine_(Engine(volumeEng, powerEng, isTurbo)), serialNum(str)
 {
-    std::cout << "Vehicle constructor\n";
+
 }

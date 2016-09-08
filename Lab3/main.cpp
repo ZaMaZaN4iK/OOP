@@ -1,5 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
+
+#include "json/json.h"
 
 #include "Auto.hpp"
 #include "Express.hpp"
@@ -7,15 +11,98 @@
 #include "Vehicle.hpp"
 #include "Carriage.hpp"
 
-// I decided that using e.g. XML or JSON  is stupid solution here
-// because the main idea of the lesson is hierarchy of classes.
-// And for parsing XML or JSON (or smth else) i should use TinyXML.
-// I wouldn't do that :)
+
+
+void prepareJsonData()
+{
+    std::ofstream outFile("input.json");
+
+    Json::Value out;
+    Json::Value cars(Json::arrayValue);
+
+    Json::Value car1, car2;
+    car1["serial"] = "1488HH_WhitePower";
+    car1["volume"] = 322.0;
+    car2["serial"] = "zamazan4ik";
+    car2["volume"] = 228.0;
+
+    cars.append(car1);
+    cars.append(car2);
+
+
+    out["automobile"]["serial"] = "BigRussianBoss";
+    out["automobile"]["size"] = 100500.0;
+    out["automobile"]["volumeEngine"] = 4.2;
+    out["automobile"]["powerEngine"] = 228.0;
+    out["automobile"]["isTurbo"] = 1;
+    out["automobile"]["isTO"] = 0;
+
+    out["express"]["serial"] = "Azazin Kreet";
+    out["express"]["size"] = 10000.0;
+    out["express"]["volumeEngine"] = 42.0;
+    out["express"]["powerEngine"] = 500.0;
+    out["express"]["isTurbo"] = 1;
+    out["express"]["carriages"] = cars;
+    out["express"]["turbospeed"] = 1;
+
+
+    outFile << out;
+    outFile.close();
+}
 
 int main()
 {
-    std::vector<Carriage> car({Carriage("1488", 322.0), Carriage("zamazan4ik", 228.0)});
-    Auto automobile("BigBossCar", 100500.0, 4.2, 228.0, true, false);
-    Express express("Azazin Kreet", 10000.0, 42.0, 500.0, true, car, true);
+    prepareJsonData();
+
+    //Read from .json
+    std::ifstream input("input.json", std::ifstream::binary);
+    input.seekg(0, std::ios::end);
+    size_t size = input.tellg();
+    std::string buffer(size, ' ');
+    input.seekg(0);
+    input.read(&buffer[0], size);
+
+    Json::Value root;
+    Json::Reader reader;
+    bool parsedSuccess = reader.parse(buffer, root, false);
+    if(!parsedSuccess)
+    {
+        std::cerr << "Failed to parse JSON" << std::endl;
+        return 1;
+    }
+
+
+    Auto automobile;
+    //Setting
+    automobile.setSerial(root["automobile"]["serial"].asString());
+    automobile.setTO(root["automobile"]["isTO"].asBool());
+    automobile.setSize(root["automobile"]["size"].asDouble());
+    automobile.setPowerEng(root["automobile"]["powerEngine"].asDouble());
+    automobile.setVolumeEng(root["automobile"]["volumeEngine"].asDouble());
+    automobile.setIsTurbo(root["automobile"]["isTurbo"].asBool());
+
+    //end
+
+    std::vector<Carriage> vec;
+    Express express;
+    express.setSerial(root["express"]["serial"].asString());
+    express.setTurboSpeed(root["automobile"]["turbospeed"].asBool());
+    express.setSize(root["express"]["size"].asDouble());
+    express.setPowerEng(root["express"]["powerEngine"].asDouble());
+    express.setVolumeEng(root["express"]["volumeEngine"].asDouble());
+    express.setIsTurbo(root["express"]["isTurbo"].asBool());
+
+    Json::Value cars;
+    cars = root["express"]["carriages"];
+    for(int i = 0; i < cars.size(); ++i)
+    {
+        Carriage car;
+        car.setSerial(cars[i]["serial"].asString());
+        car.setVolume(cars[i]["volume"].asDouble());
+        vec.emplace_back(std::move(car));
+    }
+    express.setCarriages(vec);
+    //end
+    
     return 0;
 }

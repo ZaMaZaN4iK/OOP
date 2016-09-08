@@ -15,9 +15,13 @@ class Train : public Vehicle
 private:
     std::vector<Carriage> carriages;
 public:
+    Train(){}
+
     Train(const std::string& str, const double p,
           const double volumeEng, const double powerEng,
-          const bool isTurbo, const std::vector<Carriage> car);
+          const bool isTurbo, const std::vector<Carriage>& car);
+
+    void setCarriages(const std::vector<Carriage>& vec) { carriages = vec; }
 };
 
 
