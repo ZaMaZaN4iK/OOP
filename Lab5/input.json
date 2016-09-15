@@ -1,0 +1,35 @@
+{
+	"automobile" : 
+	{
+		"cost" : 1111111,
+		"isTO" : 0,
+		"isTurbo" : 1,
+		"powerEngine" : 228,
+		"serial" : "BigRussianBoss",
+		"size" : 100500,
+		"speed" : 42,
+		"volumeEngine" : 4.2000000000000002
+	},
+	"express" : 
+	{
+		"carriages" : 
+		[
+			{
+				"serial" : "1488HH_WhitePower",
+				"volume" : 322
+			},
+			{
+				"serial" : "zamazan4ik",
+				"volume" : 228
+			}
+		],
+		"cost" : 22222222,
+		"isTurbo" : 1,
+		"powerEngine" : 500,
+		"serial" : "Azazin Kreet",
+		"size" : 10000,
+		"speed" : 1488,
+		"turbospeed" : 1,
+		"volumeEngine" : 42
+	}
+}
