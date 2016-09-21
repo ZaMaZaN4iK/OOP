@@ -9,8 +9,18 @@
 
 #include "Train.hpp"
 
+class Express;
+
+class Curator
+{
+public:
+    void iCanModify(Express& express);
+};
+
 class Express : public Train
 {
+    friend class Inspector;
+    friend void Curator::iCanModify(Express& express);
 private:
     bool turboSpeed_;
     const int SomeMagicValue = 42;

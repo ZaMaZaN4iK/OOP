@@ -13,6 +13,7 @@
 #include "Printer.hpp"
 #include "Container.hpp"
 #include "Controller.hpp"
+#include "Inspector.hpp"
 
 class A
 {
@@ -137,6 +138,12 @@ int main()
     ptrclB = dynamic_cast<B*>(ptrclA);//now ok
     //Also we can use reinterpret_cast (like C-style casting)
     //end
+
+    Inspector insp;
+    insp.IKnowAllAboutYou(express);
+
+    Curator cur;
+    cur.iCanModify(express);
 
     //Demonstrating printer
     std::vector<Vehicle*> forTest({new Auto, new Express, new Train, new Vehicle});
